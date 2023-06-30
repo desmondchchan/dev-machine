@@ -1,0 +1,17 @@
+- name: Install and configure zsh
+  block:
+    - name: Install zsh
+      become: true
+      apt:
+        name: zsh
+    - name: change user shell to zsh
+      become: true
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/zsh
+    - name: zinit
+      shell: zsh -i {{ ansible_env.HOME }}/.zshrc
+      args:
+        executable: /bin/zsh
+  tags:
+    - zsh

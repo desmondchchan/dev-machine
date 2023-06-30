@@ -1,0 +1,14 @@
+- name: Install and configure neovim
+  environment:
+    PATH: /home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}
+  block:
+    - name: Install neovim
+      homebrew:
+        name: neovim
+        state: present
+      tags:
+        - nvim
+    - name: Install nvim plugins
+      shell: \nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+      tags:
+        - nvim

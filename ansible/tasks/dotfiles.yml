@@ -1,0 +1,26 @@
+- name: Install and configure dotfiles
+  block:
+    - name: Installing stow and git
+      become: true
+      apt:
+        name:
+          - git
+          - stow
+    - name: Cloning .dotfiles
+      ansible.builtin.git:
+        repo: 'git@github.com:desmondchchan/.dotfiles.git'
+        dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
+        recursive: yes
+        update: yes
+        accept_hostkey: yes
+        version: main
+    - name: Ensure absence of existing dotfiles
+      file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - "{{ lookup('env', 'HOME') }}/.profile"
+    - name: Stow dotfiles
+      shell: cd $HOME/.dotfiles && stow */
+  tags:
+    - dotfiles

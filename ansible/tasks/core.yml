@@ -1,0 +1,65 @@
+- name: Core setup
+  block:
+    - name: Install core packages
+      become: true
+      apt:
+        name:
+          - sudo
+          - build-essential
+          - software-properties-common
+          - pkg-config
+          - ca-certificates
+          - locales
+          - sudo
+          - bash
+          - curl
+          - wget
+          - git
+          - unzip
+          - make
+          - cmake
+          - cron
+          - tmux
+          - vim
+          - python3-pip
+    - name: Install en_US.UTF-8
+      become: true
+      shell: locale-gen "en_US.UTF-8"
+  tags:
+    - core
+- name: Full setup
+  block:
+    - name: diff-so-fancy ppa
+      become: true
+      apt_repository:
+        repo: ppa:aos1/diff-so-fancy
+        state: present
+        update_cache: True
+    - name: Install productivity tools
+      become: true
+      apt:
+        name:
+          - zsh
+          - aria2
+          - rsync
+          - git-lfs
+          - tree
+          - tldr
+          - fzf
+          - ack
+          - silversearcher-ag
+          - fd-find
+          - ripgrep
+          - bat
+          - exa
+          - diff-so-fancy
+          - xclip
+- name: Install optional packages
+  become: true
+  apt:
+    name:
+      - imagemagick
+      - ffmpeg
+      - yt-dlp
+  tags:
+    - never

@@ -1,0 +1,6 @@
+- name: Install cargo
+  become: true
+  apt:
+    name: cargo
+  tags:
+    - cargo

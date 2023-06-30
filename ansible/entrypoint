@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+function main() {
+    parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+    if [[ $# -eq 0 ]]; then
+        ansible-playbook "$parent_path"/playbook.yml
+    else
+        ansible-playbook "$parent_path"/playbook.yml $@
+    fi
+}
+
+main "$@"
+
+# clean up
+rm -rf "$parent_path"
+
+# start shell
+if type -p /bin/zsh &> /dev/null; then
+  /bin/zsh -li
+elif type -p /bin/bash &> /dev/null; then
+  echo "bash"
+  /bin/bash -li
+fi

@@ -1,0 +1,55 @@
+- name: Install and configure node
+  environment:
+    PATH: "{{ansible_env.HOME}}/.local/.npm-global/bin:{{ ansible_env.PATH }}"
+    N_PREFIX: "{{ ansible_env.HOME }}/.local/.n"
+  tags:
+    - node
+  block:
+    - name: Install node and npm
+      become: true
+      apt:
+        name:
+          - nodejs
+          - npm
+    - name: Create a directory for npm
+      file:
+        path: "{{ansible_env.HOME}}/.local/.npm-global"
+        state: directory
+        mode: '0755'
+    - name: Set npm prefix
+      shell: npm config set prefix '{{ansible_env.HOME}}/.local/.npm-global'
+    - name: Install N
+      npm:
+        name: n
+        global: yes
+    - name: Create a directory for n
+      file:
+        path: "$N_PREFIX"
+        state: directory
+        mode: '0755'
+    - name: Install correct version of Node
+      shell: n 14
+- name: Install npm packages
+  block:
+    - name: Install Yarn
+      npm:
+        name: yarn
+        global: yes
+    - name: Install eslint
+      npm:
+        name: eslint
+        global: yes
+    - name: Install Typescript language server
+      npm:
+        name: typescript-language-server
+        global: yes
+    - name: Install Typescript
+      npm:
+        name: typescript
+        global: yes
+    - name: Install TS-Node
+      npm:
+        name: ts-node
+        global: yes
+  tags:
+    - node
