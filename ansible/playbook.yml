@@ -1,7 +1,4 @@
 - hosts: localhost
-  vars:
-    source_key: "./ssh/id_ed25519"
-    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
   pre_tasks:
     - name: Update apt
       become: true
