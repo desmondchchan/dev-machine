@@ -1,25 +1,24 @@
-- name: Install  Homebrew
-  vars:
-    install_homebrew_if_missing: true
+- name: Install Homebrew
   block:
+    - name: Install Homebrew dependencies
+      become: true
+      apt:
+        name:
+          - sudo
+          - bash
+          - curl
+          - git
     - name: Install Homebrew
-      tags:
-        - brew
       block:
         - name: Ensuring Homebrew Is Installed
           stat:
-            path: /home/linuxbrew/.linuxbrew/bin/brew
+            path: $HOME/.homebrew/bin/brew
           register: homebrew_check
-        - name: Fail If Homebrew Is Not Installed and install_homebrew_if_missing Is False
-          fail:
-            msg: Homebrew is missing, install from http://brew.sh
-          when:
-            - not homebrew_check.stat.exists
-            - not install_homebrew_if_missing
         - name: Install Homebrew
           shell: |
-            yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-            (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> ~/.bashrc
+            yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sed 's/HOMEBREW_PREFIX=".*"/HOMEBREW_PREFIX="$HOME\/.homebrew"/g')"
+            (echo; echo 'eval "$($HOME/.homebrew/bin/brew shellenv)"') >> ~/.bashrc
           when:
             - not homebrew_check.stat.exists
-            - install_homebrew_if_missing
+  tags:
+    - brew
