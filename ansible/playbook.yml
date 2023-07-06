@@ -1,4 +1,10 @@
 - hosts: localhost
+  vars:
+    homebrew_prefix: "{{ ansible_env.HOME }}/.local/.homebrew"
+    miniconda_prefix: "{{ ansible_env.HOME }}/.local/.miniconda"
+    micromamba_prefix: "{{ ansible_env.HOME }}/.local/.micromamba"
+    npm_prefix: "{{ ansible_env.HOME }}/.local/.npm-global"
+    n_prefix: "{{ ansible_env.HOME }}/.local/.n"
   pre_tasks:
     - name: Update apt
       become: true
@@ -8,15 +14,21 @@
         state: present
       tags:
         - core
+        - brew
+        - conda
+        - mamba
+        - node
+        - cargo
         - dotfiles
+        - zsh
   tasks:
     - include: tasks/ssh.yml
     - include: tasks/core.yml
     - include: tasks/brew.yml
-    - include: tasks/dotfiles.yml
-    - include: tasks/node.yml
     - include: tasks/conda.yml
+    - include: tasks/node.yml
     - include: tasks/cargo.yml
+    - include: tasks/dotfiles.yml
     - include: tasks/nvim.yml
     - include: tasks/lvim.yml
     - include: tasks/zsh.yml
