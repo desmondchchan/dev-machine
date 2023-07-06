@@ -1,6 +1,6 @@
 - name: Install and configure neovim
   environment:
-    PATH: /home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}
+    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
   block:
     - name: Install neovim
       homebrew:

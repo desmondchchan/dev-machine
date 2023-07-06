@@ -1,7 +1,7 @@
 - name: Install and configure node
   environment:
-    PATH: "{{ansible_env.HOME}}/.local/.npm-global/bin:{{ ansible_env.PATH }}"
-    N_PREFIX: "{{ ansible_env.HOME }}/.local/.n"
+    PATH: "{{ npm_prefix }}/bin:{{ ansible_env.PATH }}"
+    N_PREFIX: "{{ n_prefix }}"
   tags:
     - node
   block:
@@ -13,18 +13,24 @@
           - npm
     - name: Create a directory for npm
       file:
-        path: "{{ansible_env.HOME}}/.local/.npm-global"
+        path: "{{ npm_prefix }}"
         state: directory
         mode: '0755'
     - name: Set npm prefix
-      shell: npm config set prefix '{{ansible_env.HOME}}/.local/.npm-global'
+      shell: npm config set prefix '{{ npm_prefix }}'
+    - name: Install curl and wget
+      become: true
+      apt:
+        name:
+          - curl
+          - wget
     - name: Install N
       npm:
         name: n
         global: yes
     - name: Create a directory for n
       file:
-        path: "$N_PREFIX"
+        path: "{{ n_prefix }}"
         state: directory
         mode: '0755'
     - name: Install correct version of Node

@@ -12,12 +12,12 @@
       block:
         - name: Ensuring Homebrew Is Installed
           stat:
-            path: $HOME/.homebrew/bin/brew
+            path: "{{ homebrew_prefix }}/bin/brew"
           register: homebrew_check
         - name: Install Homebrew
           shell: |
-            yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sed 's/HOMEBREW_PREFIX=".*"/HOMEBREW_PREFIX="$HOME\/.homebrew"/g')"
-            (echo; echo 'eval "$($HOME/.homebrew/bin/brew shellenv)"') >> ~/.bashrc
+            yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sed 's/HOMEBREW_PREFIX=".*"/HOMEBREW_PREFIX="$HOME\/.local\/.homebrew"/g')"
+            (echo; echo 'eval "$({{ homebrew_prefix }}/bin/brew shellenv)"') >> ~/.bashrc
           when:
             - not homebrew_check.stat.exists
   tags:
