@@ -1,7 +1,7 @@
 - name: Core setup
+  become: true
   block:
     - name: Install core packages
-      become: true
       apt:
         name:
           - sudo
@@ -10,7 +10,6 @@
           - pkg-config
           - ca-certificates
           - locales
-          - sudo
           - bash
           - curl
           - wget
@@ -21,22 +20,26 @@
           - cron
           - tmux
           - vim
-          - python3-pip
-    - name: Install en_US.UTF-8
-      become: true
-      shell: locale-gen "en_US.UTF-8"
+    - name: Ensure en_US.UTF8 locale exists
+      locale_gen:
+        name: en_US.UTF-8
+        state: present
   tags:
     - core
 - name: Full setup
+  become: true
   block:
+    - name: Install Python
+      apt:
+        name:
+          - python3-pip
+          - python3-venv
     - name: diff-so-fancy ppa
-      become: true
       apt_repository:
         repo: ppa:aos1/diff-so-fancy
         state: present
         update_cache: True
     - name: Install productivity tools
-      become: true
       apt:
         name:
           - zsh
@@ -54,6 +57,7 @@
           - exa
           - diff-so-fancy
           - xclip
+          - xsel
 - name: Install optional packages
   become: true
   apt:
