@@ -58,6 +58,10 @@
           - diff-so-fancy
           - xclip
           - xsel
+          - lm-sensors
+          - htop
+          - btop
+          - nvtop
 - name: Install optional packages
   become: true
   apt:
