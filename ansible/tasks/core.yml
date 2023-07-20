@@ -66,6 +66,7 @@
           - htop
           - btop
           - nvtop
+          - gh
 - name: Install optional packages
   become: true
   apt:
