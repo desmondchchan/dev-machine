@@ -67,6 +67,9 @@
           - btop
           - nvtop
           - gh
+          - hyperfine
+          - jq
+          - parallel
 - name: Install optional packages
   become: true
   apt:
