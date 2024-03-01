@@ -23,6 +23,7 @@
         - "{{ ansible_env.HOME }}/.tmux"
         - "{{ ansible_env.HOME }}/.config/lvim"
         - "{{ ansible_env.HOME }}/.config/lazygit"
+        - "{{ ansible_env.HOME }}/.docker"
     - name: Ensure absence of existing dotfiles
       file:
         path: '{{ item }}'
