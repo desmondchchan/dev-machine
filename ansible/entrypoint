@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 
@@ -14,12 +14,20 @@ function main() {
 main "$@"
 
 # clean up
-rm -rf "$parent_path"
+rm -rf "$parent_path"/entrypoint
+touch "$parent_path"/entrypoint
+cat > "$parent_path"/entrypoint << EOM
+#!/bin/bash
 
-# start shell
 if type -p /bin/zsh &> /dev/null; then
-  /bin/zsh -li
+    /bin/zsh -li
 elif type -p /bin/bash &> /dev/null; then
-  echo "bash"
-  /bin/bash -li
+    /bin/bash -li
+fi
+EOM
+
+if type -p /bin/zsh &> /dev/null; then
+    /bin/zsh -li
+elif type -p /bin/bash &> /dev/null; then
+    /bin/bash -li
 fi

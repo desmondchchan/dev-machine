@@ -35,4 +35,4 @@ FROM base as custom
 COPY --chown=$USERNAME:$USERNAME ansible ./ansible
 
 # run ansible-playbook
-ENTRYPOINT ["/bin/bash", "./ansible/entrypoint"]
+ENTRYPOINT ["/bin/bash", "ansible/entrypoint"]
