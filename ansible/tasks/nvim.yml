@@ -1,14 +1,16 @@
 - name: Install and configure neovim
-  environment:
-    PATH: "{{ homebrew_prefix }}/bin:{{ ansible_env.PATH }}"
+  become: true
   block:
-    - name: Install neovim
-      homebrew:
-        name: neovim
+    - name: neovim unstable ppa
+      apt_repository:
+        repo: ppa:neovim-ppa/unstable
         state: present
-      tags:
-        - nvim
+        update_cache: True
+    - name: Install neovim
+      apt:
+        name:
+          - neovim
     - name: Install nvim plugins
-      shell: \nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+      shell: \nvim --headless -c 'autocmd User quitall' -c 'quitall'
       tags:
         - nvim
